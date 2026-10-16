@@ -440,7 +440,9 @@ based on a condition when you don’t know the exact position.)</p>
 <p>Question #6:</p>
 <p>What happens if you run grades[10] (an index that doesn’t exist)? Run
 it, observe the result, and explain why R responds this way instead of
-throwing an error. (Your answer here)</p>
+throwing an error. (Running grades[10] returns NA because index 10 is
+out of bounds. R returns NA to represent missing data instead of
+throwing an error to prevent code from crashing..)</p>
 <p>Question #7:</p>
 <p>Print a vector with the integers between 1 and 100 that are not
 divisible by 3, 5 and 7 using filter option. Filter(function(i) { all(i
