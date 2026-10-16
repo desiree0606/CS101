@@ -374,9 +374,22 @@ a+b</code></pre>
 <pre><code>## [1] 3</code></pre>
 <pre class="r"><code>2^10</code></pre>
 <pre><code>## [1] 1024</code></pre>
-</div>
-<div id="part-b---basic-data-types" class="section level2">
-<h2>Part B - Basic Data Types</h2>
+<p>Question #1: Run 17 / 5, 17 %% 5, and 17 %/% 5 side by side. In your
+own words, explain how these three results relate to each other
+mathematically.</p>
+<p>(Standard division gives you the exact decimal, while integer
+division drops the extra fraction to leave just a whole number, and
+modulus tells you what’s left over. If you multiply that whole number by
+the divisor and add the leftover remainder, you get your original number
+back.)</p>
+<p>Question #2: Predict the output of 10 %% 3 and 10 %/% 3 before
+running the code. Were you correct? If not, explain what you
+misunderstood.</p>
+<p>(10 %% 3 gives 1 because it’s the remainder when 10 is divided by 3
+and 10 %% 3 gives 3 because that’s how many times 3 fits into 10 evenly.
+My prediction was correct because these operators simply separate
+division into its whole parts and leftover parts.) ## Part B - Basic
+Data Types</p>
 <pre class="r"><code>x &lt;- 42
 y &lt;- 42L
 z &lt;- &quot;42&quot;
@@ -413,6 +426,19 @@ typeof(x)</code></pre>
 <pre><code>## [1] &quot;logical&quot;</code></pre>
 <pre class="r"><code>mode(v)</code></pre>
 <pre><code>## [1] &quot;complex&quot;</code></pre>
+<p>Question #3): x &lt;- 42 and y &lt;- 42L look almost identical, but
+typeof(x) and typeof(y) give different answers. Explain the difference
+in your own words.</p>
+<p>(Even though both store the number 42, the L suffix forces R to treat
+it strictly as a whole-number integer, whereas the plain number is
+stored as a decimal-capable double.)</p>
+<p>Question #4: Is typeof() ever different from class() and from mode()
+for the same object? Look at your results above and explain any case
+where this happens (or, if you did not see one, explain what you would
+expect for a matrix or factor).</p>
+<p>(Yes, they can differ when higher-level structures (like factors or
+matrices) store data under the hood as primitive types (typeof) while
+presenting a specialized class (class).)</p>
 </div>
 <div id="part-c---type-conversion" class="section level2">
 <h2>Part C - Type Conversion</h2>
@@ -432,6 +458,25 @@ typeof(num_val)</code></pre>
 as.numeric(bad_string)</code></pre>
 <pre><code>## Warning: NAs introduced by coercion</code></pre>
 <pre><code>## [1] NA</code></pre>
+<p>Question #5: When you ran the conversion-fail chunk, R produced NA
+and a warning instead of stopping with an error.</p>
+<p>Why do you think R is designed to give a warning here rather than
+crashing the whole script?</p>
+<p>(R gives a warning instead of crashing so that your script keeps
+running and you can handle or fix the bad data without losing all your
+progress.)</p>
+<p>What are the risks of this behavior if you don’t read your
+warnings?</p>
+<p>(If you ignore warnings, silent errors or missing data (NA) can sneak
+into your calculations and ruin your final results without you realizing
+it.)</p>
+<p>Question #6: as.logical(0) and as.logical(1) convert to FALSE and
+TRUE.</p>
+<p>What do you think as.logical(2) and as.logical(-1)` will produce? (
+Numbers other than 0 and 1 usually convert to TRUE in R.)</p>
+<p>Test it, then explain the rule R seems to be following. (R treats
+anything other than zero as TRUE, while strictly zero evaluates to
+FALSE.)</p>
 </div>
 <div id="part-d---strings-paste-and-paste0" class="section level2">
 <h2>Part D - Strings, paste(), and paste0()</h2>
@@ -454,53 +499,6 @@ full_name</code></pre>
 <pre class="r"><code>age &lt;- 21
 paste0(full_name, &quot;is&quot;, age, &quot;years old.&quot;)</code></pre>
 <pre><code>## [1] &quot;Juan Dela Cruzis21years old.&quot;</code></pre>
-<p>Question #1: Run 17 / 5, 17 %% 5, and 17 %/% 5 side by side. In your
-own words, explain how these three results relate to each other
-mathematically.</p>
-<p>(Standard division gives you the exact decimal, while integer
-division drops the extra fraction to leave just a whole number, and
-modulus tells you what’s left over. If you multiply that whole number by
-the divisor and add the leftover remainder, you get your original number
-back.)</p>
-<p>Question #2: Predict the output of 10 %% 3 and 10 %/% 3 before
-running the code. Were you correct? If not, explain what you
-misunderstood.</p>
-<p>(10 %% 3 gives 1 because it’s the remainder when 10 is divided by 3
-and 10 %% 3 gives 3 because that’s how many times 3 fits into 10 evenly.
-My prediction was correct because these operators simply separate
-division into its whole parts and leftover parts.)</p>
-<p>Question #3): x &lt;- 42 and y &lt;- 42L look almost identical, but
-typeof(x) and typeof(y) give different answers. Explain the difference
-in your own words.</p>
-<p>(Even though both store the number 42, the L suffix forces R to treat
-it strictly as a whole-number integer, whereas the plain number is
-stored as a decimal-capable double.)</p>
-<p>Question #4: Is typeof() ever different from class() and from mode()
-for the same object? Look at your results above and explain any case
-where this happens (or, if you did not see one, explain what you would
-expect for a matrix or factor).</p>
-<p>(Yes, they can differ when higher-level structures (like factors or
-matrices) store data under the hood as primitive types (typeof) while
-presenting a specialized class (class).)</p>
-<p>Question #5: When you ran the conversion-fail chunk, R produced NA
-and a warning instead of stopping with an error.</p>
-<p>Why do you think R is designed to give a warning here rather than
-crashing the whole script?</p>
-<p>(R gives a warning instead of crashing so that your script keeps
-running and you can handle or fix the bad data without losing all your
-progress.)</p>
-<p>What are the risks of this behavior if you don’t read your
-warnings?</p>
-<p>(If you ignore warnings, silent errors or missing data (NA) can sneak
-into your calculations and ruin your final results without you realizing
-it.)</p>
-<p>Question #6: as.logical(0) and as.logical(1) convert to FALSE and
-TRUE.</p>
-<p>What do you think as.logical(2) and as.logical(-1)` will produce? (
-Numbers other than 0 and 1 usually convert to TRUE in R.)</p>
-<p>Test it, then explain the rule R seems to be following. (R treats
-anything other than zero as TRUE, while strictly zero evaluates to
-FALSE.)</p>
 <p>Question #7: paste() and paste0() produced different results for the
 same two strings. Explain exactly why, referencing what each function
 does by default.</p>
@@ -515,6 +513,8 @@ in Part C.</p>
 <p>(It did not cause an error because paste0() automatically converts
 numbers into text behind the scenes before joining them together, acting
 similarly to an automatic as.character() conversion.)</p>
+<pre class="r"><code>as.numeric(&quot;5&quot;) + 5</code></pre>
+<pre><code>## [1] 10</code></pre>
 <p>Question #9: Some programming languages automatically convert “5” + 5
 into 10 without an error. R does not.</p>
 <p>Based on what you’ve learned about R’s data types in this lab, why do
