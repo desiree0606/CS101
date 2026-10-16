@@ -78,18 +78,18 @@ forbes_df <- data.frame(Name = celeb_name, PowerRank = power_ranking, Pay = pay_
 # Modify J.K. Rowling (or target row) power ranking to 15 and pay to 90
 
 #Question 4
-# a. Create a list of ten vegetables
+# . Create a list of ten vegetables
 vegetables <- list("Carrot", "Broccoli", "Spinach", "Potato", "Tomato", "Cabbage", "Lettuce", "Cucumber", "Eggplant", "Pumpkin")
 
-# b. Add 2 additional vegetables after the last vegetables
+# a. Add 2 additional vegetables after the last vegetables
 vegetables <- append(vegetables, list("Zucchini", "Radish"))
 
-# c. How many datapoints do you have?
+# b. How many datapoints do you have?
 length(vegetables)
 
-# d. Add 4 additional vegetables after index 5
+# c. Add 4 additional vegetables after index 5
 vegetables <- append(vegetables, list("Garlic", "Onion", "Peas", "Corn"), after = 5)
 
-# e. How many datapoints does your vegetable list have now?
+# d. How many datapoints does your vegetable list have now?
 length(vegetables)
 ```
