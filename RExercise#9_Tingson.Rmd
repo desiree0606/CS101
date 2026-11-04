@@ -1,0 +1,65 @@
+---
+title: "RExercise#9_Tingson.Rmd"
+output: html_document
+date: "2026-11-04"
+---
+## Part A
+Question #1
+```{r}
+##Question 1
+# TODO: Create the shoe size and height data frame and save as shoesize.csv
+shoes <- data.frame(
+  Respondent = 1:6,
+  Gender = c("Male", "Female", "Male", "Female", "Male", "Female"),
+  ShoeSize = c(10, 7, 11, 6.5, 12, 8),
+  Height = c(175, 160, 180, 155, 185, 165)
+)
+write.csv(shoes, "shoesize.csv", row.names = FALSE)
+
+# TODO: Import the saved csv and display the last 5 rows
+shoes <- read.csv("shoesize.csv")
+tail(shoes, 5)
+
+# TODO: Describe the data by showing structure and content
+str(shoes)
+print(shoes)
+
+# TODO: Inspect dimensions (rows and columns)
+dim(shoes)
+nrow(shoes)
+ncol(shoes)
+
+# TODO: Inspect using summary()
+summary(shoes)
+
+# TODO: Create subsets by males and females with shoe size and height
+male_subset <- subset(shoes, Gender == "Male", select = c(ShoeSize, Height))
+female_subset <- subset(shoes, Gender == "Female", select = c(ShoeSize, Height))
+print(male_subset)
+print(female_subset)
+
+# TODO: Find the mean of shoe size and height of the respondents
+mean(shoes$ShoeSize, na.rm = TRUE)
+mean(shoes$Height, na.rm = TRUE)
+```
+Question #2
+A nominal variable is a categorical variable without an implied order. This means that it is impossible to say that ‘one is worth more than the other’.
+Create factors for the gender.
+```{r}
+# TODO: Create factors for the gender
+shoes$Gender <- as.factor(shoes$Gender)
+```
+Question #3
+When R Markdown knits a document, it uses the folder containing the .Rmd file as the working directory — NOT whatever folder your R console happened to be in beforehand. Why do you think this design choice makes an .Rmd file’s imports more reliable and reproducible when shared with someone else?
+
+(This design choice ensures that file paths remain relative to the .Rmd file location rather than the user's local console path. Consequently, anyone else running the script will successfully load the data without encountering file-not-found errors)
+Question #4
+Run str(shoes) and note the type R assigned to the Gender column. Is it what you expected? Explain what could go wrong in later analysis if a column you expected to be numeric (like ShoeSize) was accidentally imported as text (character) instead — for example, because of a stray non-numeric value in the original file.
+```{r}
+# TODO: Compute for the correlation between shoe size and height
+cor(shoes$ShoeSize, shoes$Height)
+
+# TODO: Return all rows where ShoeSize is greater than or equal to 11
+shoes[shoes$ShoeSize >= 11, ]
+```
+
