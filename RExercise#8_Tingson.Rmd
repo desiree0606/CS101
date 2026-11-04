@@ -1,0 +1,116 @@
+---
+title: "R Lab: Basic Operations - sort(), rank(), and order()"
+author: Desiree joy Tingson
+output: html_document
+date: "2026-11-04"
+---
+## Part A — Creating Data Frames
+```{r}
+
+# TODO: Question #1 - Create a vector with names
+scores <- c(Ana = 78, Ben = 92, Cid = 85, Dex = 92, Eli = 67, Fay = 88, Gio = 74)
+print(scores)
+
+# TODO: Sort the scores in ascending and descending order
+sort_asc <- sort(scores)
+sort_desc <- sort(scores, decreasing = TRUE)
+print(sort_asc)
+print(sort_desc)
+
+# TODO: Check whether the names stayed attached to their sorted values
+names(sort_asc)
+
+# TODO: Create subjects and incomplete vectors with missing values
+subjects <- c("Science", "Math", "English", "Filipino", "PE")
+incomplete <- c(85, NA, 90, 70, NA, 95)
+
+# TODO: Sort subjects alphabetically
+sort(subjects)
+
+# TODO: Sort incomplete using default sort() and with na.last = TRUE
+sort(incomplete)
+sort(incomplete, na.last = TRUE)
+```
+Question #2:
+When you sorted scores, did the names stay correctly attached to their original values?
+Explain why this matters: if you were sorting exam scores to find the top performer, what would go wrong if the names did NOT follow their values?
+
+Yes, the names stay correctly attached to their original values when sorting a named vector. If names did not follow their values during score sorting, you would misidentify top-performing students and put their grades to the wrong person.
+
+Question #3:
+
+By default, sort() silently removes NA values instead of showing them or throwing an error.
+Why might this default behavior be dangerous if you were reporting “the lowest score” in a dataset with missing data, without first checking for NA values?.
+
+Silently stripping NA values can mask data collection errors or missing records without alerting the user. If you were searching for the lowest score, missing data could be completely ignored, leading to inaccurate conclusions and flawed reporting.
+
+Question #4:
+
+Use order(scores) and print the result. Compare this output to the sort(scores) output. What is the difference?
+The order() function returns an integer vector of position indices rather than the sorted values themselves.
+
+Use the result of order(scores) to index scores itself: # Compare this to sort(scores) – they should produce the same values.
+Do they have the same values? Explain briefly.
+
+When you pass those index positions into square brackets (scores[order(scores)]), it rearranges the original vector to match sort(scores) values.
+```{r}
+# TODO: Use order(scores) and compare to sort(scores)
+order_res <- order(scores)
+print(order_res)
+scores[order_res]
+```
+Question 5 
+Create a dataframe from these vectors 
+name = c("Ana", "Ben", "Cid", "Dex", "Eli", "Fay", "Gio") 
+score = c(78, 92, 85, 92, 67, 88, 74) 
+section = c("A", "B", "A", "B", "A", "B", "A")
+
+```{r}
+# TODO:Create a data frame from vectors and reorder by score
+students <- data.frame(
+  name = c("Ana", "Ben", "Cid", "Dex", "Eli", "Fay", "Gio"),
+  score = c(78, 92, 85, 92, 67, 88, 74),
+  section = c("A", "B", "A", "B", "A", "B", "A")
+)
+print(students)
+
+# Reorder entire data frame by score ascending and descending
+students[order(students$score), ]
+students[order(students$score, decreasing = TRUE), ]
+```
+Question #6:
+
+sort(scores) and scores[order(scores)] produce the same final values, but they work completely differently under the hood.
+
+In your own words, explain what order(scores) actually returns (look at the raw numbers it gives you), and why that output is useless on its own unless you use it to index something.
+
+The order() function returns the raw integer positions of elements in their sorted sequence or area. On its own, this sequence of numbers is not usefull because it only describes coordinate positions rather than the actual data values stored within them.
+
+Question #7:
+
+Explain why sort() alone could NOT have been used to reorder the whole students data frame by score (try to imagine running sort(students) and think about what “sorting a table” would even mean).
+
+Why is order() the correct tool whenever you need to keep multiple related columns lined up with each other?
+
+The sort() function only operates on individual 1D vectors and cannot rearrange multi-column rows because a table has no single linear dimension to sort. The order() function is the correct tool because it generates the exact positional map you need to keep multiple related columns arranged.
+
+Question #8
+```{r}
+# TODO: Question #8 - Use rank(scores) and compare side by side
+cbind(scores, Rank = rank(scores))
+
+# TODO: Question #8 (Sales Challenge) - Create sales data frame, add rank, and reorder
+sales <- data.frame(
+  employee = c("Rey", "Sam", "Tin", "Uma", "Val"),
+  units_sold = c(120, 145, 145, 98, 130)
+)
+sales$rank <- rank(-sales$units_sold) # Top seller gets rank 1
+sales[order(sales$units_sold, decreasing = TRUE), ]
+```
+Question #9:
+
+In this challenge, you used rank() to determine standing and order() to determine display order.
+Could you have used order() alone to solve the entire problem (both awarding ranks AND reordering the table)?
+Explain what order() is missing that rank() provides, using your own words rather than repeating the definitions
+
+You could not have used order() alone to solve the entire problem because order() only provides position sorting coordinates but not numerical standings or ranks. Rank() provides explicit ordinal position values that handle ties and represent relative standing, which index ordering cannot do on its own.

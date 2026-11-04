@@ -1,5 +1,5 @@
 ---
-title: "RExercise#9_Tingson.Rmd"
+title: "R Lab: Basic Operations of R Programming"
 output: html_document
 date: "2026-11-04"
 ---
