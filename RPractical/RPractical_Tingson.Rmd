@@ -1,0 +1,247 @@
+---
+title: "R Programming Practical Examination"
+author: "Desiree Joy Tingson"
+date: "2026-11-11"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+---
+title: "RPractical_Tingson"
+author: "Desiree Joy Tingson"
+date: "2026-11-11"
+output: pdf_document
+---
+
+## Part A: Basic Operations
+##A1
+```{r}
+v <- seq(5, 50, by = 5)
+v
+length(v)
+sum(v)
+mean(v)
+```
+
+##A2
+```{r}
+w <- rep(c(1, 2, 3), times = 4)
+z <- rep(c(1, 2, 3), each = 4)
+print(w)
+print(z)
+```
+
+##A3
+```{r}
+17 %% 5      
+17 %/% 5    
+2^10          
+sqrt(144)    
+round(pi, 3) 
+```
+
+##A4
+```{r}
+a <- c(2, 4, 6, 8)
+b <- c(1, 3, 5, 7)
+
+a + b
+a * b
+a > b
+sum(a * b)
+```
+
+##A5
+```{r}
+paste("Student", 1:3, sep = "-")
+class(42)
+class(42L)
+class("42")
+class(411)
+class(TRUE)
+```
+
+## Part B: Data Frames and Conditional Statements
+##B1
+```{r}
+students <- data.frame(
+  id = 1:8,
+  name = c("Alice", "Bruno", "Chen", "Dana", "Elif", "Farid", "Grace", "Hiro"),
+  sex = c("F", "M", "M", "F", "F", "M", "F", "M"),
+  section = c("A", "B", "A", "C", "B", "C", "A", "B"),
+  midterm = c(78, 85, 92, 67, 74, 88, 95, 59),
+  final = c(82, 79, 96, 71, 80, 91, 93, 65),
+  attendance = c(95, 88, 100, 72, 90, 85, 98, 60),
+  stringsAsFactors = FALSE
+)
+print(students)
+```
+
+##B2
+```{r}
+str(students)
+dim(students)
+colnames(students)
+summary(students)
+```
+
+##B3
+```{r}
+students$average <- round(rowMeans(students[, c("midterm", "final")]), 1)
+students
+```
+
+##B4
+```{r}
+students$passed <- students$average >= 72 & students$attendance >= 75
+students
+```
+
+##B5
+```{r}
+students$standing <- ifelse(students$average >= 90, "Honors",
+                     ifelse(students$average >= 75, "Good", "Needs Support"))
+students
+```
+
+##B6
+```{r}
+classify <- function(score) {
+  if (score >= 85) {
+    return("Distinction")
+  } else if (score >= 70) {
+    return("Merit")
+  } else if (score >= 50) {
+    return("Pass")
+  } else {
+    return("Fail")
+  }
+}
+
+sapply(c(90, 73, 55, 40), classify)
+```
+
+## Part C: rbind() and cbind()
+```{r}
+new_students <- data.frame(
+  id = c(9, 10),
+  name = c("Ines", "Jamal"),
+  sex = c("F", "M"),
+  section = c("C", "A"),
+  midterm = c(81, 70),
+  final = c(84, 68),
+  attendance = c(92, 80),
+  stringsAsFactors = FALSE
+)
+
+# Calculate derived columns to match original structure
+new_students$average <- round(rowMeans(new_students[, c("midterm", "final")]), 1)
+new_students$passed <- new_students$average >= 72 & new_students$attendance >= 75
+new_students$standing <- ifelse(new_students$average >= 90, "Honors",
+                         ifelse(new_students$average >= 75, "Good", "Needs Support"))
+
+students_all <- rbind(students, new_students)
+students_all
+```
+
+```{r}
+quiz <- c(8, 7, 10, 6, 7, 9, 10, 5, 8, 6)
+students_all <- cbind(students_all, quiz)
+class(students_all)
+students_all
+```
+
+```{r}
+m <- cbind(midterm = students_all$midterm, final = students_all$final)
+m_with_mean <- rbind(m, mean = colMeans(m))
+m_with_mean
+```
+
+```{r}
+bad <- data.frame(id = 11, student_name = "Katy") # Incorrect column name
+
+tryCatch(
+  rbind(students, bad),
+  error = function(e) {
+    message("rbind failed: ", conditionMessage(e))
+    NULL
+  }
+)
+## Explanation: rbind() requires all data frames to have identical column names and structures. When column names differ (e.g., student_name vs. name), R cannot map the rows automatically, triggering a structural mismatch error.
+```
+
+## Part D: Subsetting
+```{r}
+students_all$name
+students_all[["name"]]
+students_all[, "name"]
+```
+
+```{r}
+students_all[2:5, c("name", "midterm", "final")]
+```
+
+```{r}
+students_all[students_all$attendance > 90, ]
+```
+
+```{r}
+subset(
+  students_all, 
+  sex == "F" & (section == "A" | section == "C") & final >= 75, 
+  select = c("name", "section", "final")
+)
+```
+
+```{r}
+students_all$name[which.max(students_all$average)]
+```
+
+```{r}
+students_all$name[which.min(students_all$average)]
+```
+
+```{r}
+students_sorted <- students_all[order(-students_all$average), ]
+head(students_sorted, 3)
+```
+
+## Part E: Basic Factors
+```{r}
+students_all$section <- factor(students_all$section)
+students_all$sex <- factor(students_all$sex)
+
+levels(students_all$section)
+levels(students_all$sex)
+```
+
+```{r}
+table(students_all$sex, students_all$section)
+```
+
+```{r}
+as.integer(students_all$sex)
+
+## Explanation: Beneath their text labels, factors in R are represented internally as integer vectors, where each integer maps to an alphabetically sorted level (1 for "F", 2 for "M").
+```
+
+```{r}
+sex_label <- factor(students_all$sex, levels = c("F", "M"), labels = c("Female", "Male"))
+students_all$sex_label <- sex_label
+levels(students_all$sex_label)
+```
+
+```{r}
+summary(students_all$sex_label)
+
+# Mean average for Females
+mean(students_all$average[students_all$sex_label == "Female"])
+
+# Mean average for Males
+mean(students_all$average[students_all$sex_label == "Male"])
+```
