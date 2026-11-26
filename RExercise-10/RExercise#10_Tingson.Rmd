@@ -1,0 +1,166 @@
+---
+title: "The apply Family at Glance"
+author: "Desiree Joy Tingson"
+date: "2026-11-26"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+### Part A — Predict the Output
+
+#### Question #1
+
+```{r}
+
+m <- matrix(1:6, nrow = 2)
+
+# a)
+apply(m, 1, sum)
+
+# b) 
+apply(m, 2, sum)
+
+# c) 
+class(lapply(1:3, function(i) i^2))
+
+# d) 
+sapply(1:3, function(i) i^2)
+
+# e)
+sapply(c('a', 'bb', 'ccc'), nchar)
+
+# f) 
+mapply(function(x, y) x * y, 1:3, 4:6)
+
+# g) 
+tapply(c(10, 20, 30, 40), c('u', 'v', 'u', 'v'), sum)
+
+```
+
+* **Answer:**
+> Row sums give `9` and `12` (`1+3+5` and `2+4+6`), while column sums give `3`, `7`, and `11`. `lapply()` returns `"list"`, whereas `sapply()` simplifies squares into the numeric vector `1, 4, 9` and string lengths into `1, 2, 3`. `mapply()` pairs elements to output `4, 10, 18`, and `tapply()` groups by `'u'` (`40`) and `'v'` (`60`).
+
+
+
+---
+
+#### Question #2
+
+```{r}
+
+scores <- matrix(c(70, 85, 90,
+                   60, 75, 80,
+                   88, 92, 79),
+                 nrow = 3, byrow = TRUE,
+                 dimnames = list(c('Ana', 'Ben', 'Cara'), c('Math', 'Sci', 'Eng')))
+
+temps <- list(Mon = c(30, 32, 31), Tue = c(29, 33), Wed = c(31, 34, 35, 30))
+
+# b.1a
+apply(scores, 1, mean)
+
+# b.1b
+apply(scores, 2, max)
+
+# b.1c
+apply(scores, 1, function(row) colnames(scores)[which.max(row)])
+
+# b.2
+lapply(temps, mean)
+sapply(temps, length)
+vapply(temps, range, numeric(2))
+
+```
+
+* **Answer:**
+> For `scores`, row means give each student's average (`Ana: 81.67`, `Ben: 71.67`, `Cara: 86.33`), column maxes give the top score per subject (`88, 92, 90`), and `which.max()` picks each student's top subject (`Eng`, `Eng`, `Sci`). For `temps`, `lapply()` returns a list of means, `sapply()` returns a vector of counts, and `vapply()` returns a 2-row matrix because `range()` outputs two numbers (min and max) per day.
+
+
+
+---
+
+#### Question #3
+
+```{r}
+
+p <- c(1000, 2000)
+r <- c(0.05, 0.04)
+n <- c(2, 3)
+
+# Varying rates per loan
+mapply(function(principal, rate, years) principal * (1 + rate)^years, p, r, n)
+
+# Fixed 4.5% rate using MoreArgs
+mapply(function(principal, years, rate) principal * (1 + rate)^years, p, n, MoreArgs = list(rate = 0.045))
+
+```
+
+* **Answer:**
+> Using varying rates gives `1102.5` for the first loan and `2249.728` for the second loan. Passing `rate = 0.045` inside `MoreArgs` keeps the interest rate fixed at 4.5% for both loans while still varying principal and years.
+
+
+
+---
+
+#### Question #4
+
+```{r}
+
+# a
+tapply(iris$Sepal.Length, iris$Species, mean)
+
+# b
+table(mtcars$cyl, mtcars$am)
+
+# c
+tapply(mtcars$mpg, mtcars$cyl, mean, na.rm = TRUE)
+
+```
+
+* **Answer:**
+> `tapply()` calculates the average `Sepal.Length` for each species in `iris` and the average `mpg` per cylinder group in `mtcars` with `na.rm = TRUE`. `table()` builds a count grid showing how many cars fall into each `cyl` and `am` combination.
+
+
+
+---
+
+### Part A — Debugging
+
+#### Question #5
+
+```{r}
+
+# Fix 1: 
+sapply(list(a = 1:3, b = 4:6), mean)
+
+# Fix 2: 
+apply(matrix(1:6, nrow = 3), 2, mean)
+
+# Fix 3:
+df <- data.frame(n = c(1, 2), s = c('a', 'b'))
+sapply(df, class)
+
+```
+
+* **Answer:**
+> Calling `mean()` instead of passing `mean` causes an argument error because `mean()` needs input right away. Using margin `1` averages rows instead of columns, so changing it to `2` gives two column means. Applying `apply()` to a mixed data frame converts it to a single type first, whereas `sapply()` checks each column's true class separately.
+
+
+
+---
+
+#### Question #6
+
+```{r}
+
+x <- c(10, 20, 30, 40)
+g <- c('u', 'v', 'u', 'v')
+
+
+tapply(x, g, mean)
+
+```
+
+* **Answer:**
+> `lapply()` always returns a list, `sapply()` tries to simplify the output into a vector or matrix, and `vapply()` is best when you want strict type and length checking for safer code. `tapply(x, g, mean)` does the same work as `lapply(split(x, g), mean)` in one step and returns a named array (or vector) of group means.
